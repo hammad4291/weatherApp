@@ -1,6 +1,44 @@
-import React from 'react'
+import React, { useState , useEffect } from 'react'
+import WeatherCard from './weatherCard';
 import "./style.css"
 const Temp = () => {
+
+    const [searchValue, setSearchValue] = useState("islamabad");
+    const [tempInfo, setTempInfo] = useState({})
+    const getWeatherInfo = async () => {
+        try {
+            let URL = `https://api.openweathermap.org/data/2.5/weather?q=${searchValue}&units=metric&appid=ed28cc5e89b9297f4a137f5f1caa84ef`
+            let res = await fetch(URL);
+            let data = await res.json();
+            console.log(data);
+            const {temp ,humidity, pressure} = data.main;
+            const { main : weathermood } = data.weather[0];
+            const name = data;
+            const {speed} = data.wind;
+            const {country, sunset} = data.sys;
+            const newWeatherInfo = {
+                temp,
+                name,
+                humidity,
+                pressure,
+                weathermood,
+                speed,
+                country,
+                sunset
+            }
+            setTempInfo(newWeatherInfo);
+        } catch (error) {
+            console.log(console.error())
+          alert("Check your internet or spelling")
+        }
+    }
+
+    // To call it on relod
+
+    useEffect(() => {
+        getWeatherInfo();
+    },[])
+
   return (
     <>
       <div className="wrap">
@@ -10,74 +48,16 @@ const Temp = () => {
                 autoFocus
                 id='search'
                 className='searchTerm'
+                value={searchValue}
+                onChange={(event) => {setSearchValue(event.target.value)}}
             />
-            <button className='searchButton' type='button'>
+            <button className='searchButton' type='button' onClick={() => {getWeatherInfo()}}>
         Search</button>
         </div>
       </div>
 
         {/* temp card */}
-        <article className="widget">
-            <div className="weatherIcon">
-                <i className={"wi wi-day-sunny"}></i>
-            </div>
-            <div className="weatherInfo">
-                <div className="temperature">
-                    <span>25.5&deg;</span>
-                </div>
-                <div className="description">
-                    <div className="weatherCondition">
-                        Cloudy
-                    </div>
-                    <div className="place">Rawalpindi, Pakistan</div>
-                </div>
-            </div>
-            <div className="date">{new Date().toLocaleString()}</div>
-            {/* 4 column section */}
-            <div className="extra-temp">
-                <div className="temp-info-minmax">
-                <div className="two-sided-section">
-                    <p>
-                        <i className={"wi wi-sunset"}></i>
-                    </p>
-                    <p className='extra-info-leftside'>
-                    19:19 PM <br />
-                    Sunset
-                    </p>
-                    </div>
-                    <div className="two-sided-section">
-                    <p>
-                        <i className={"wi wi-humidity"}></i>
-                    </p>
-                    <p className='extra-info-leftside'>
-                    19:19 PM <br />
-                    Humidity
-                    </p>
-                    </div>
-                </div>
-                <div className="weather-extra-info">
-                <div className="two-sided-section">
-                    <p>
-                        <i className={"wi wi-rain"}></i>
-                    </p>
-                    <p className='extra-info-leftside'>
-                    19:19 PM <br />
-                    Pressure
-                    </p>
-                    </div>
-                    <div className="two-sided-section">
-                    <p>
-                        <i className={"wi wi-strong-wind"}></i>
-                    </p>
-                    <p className='extra-info-leftside'>
-                    19:19 PM <br />
-                    Speed
-                    </p>
-                    </div>
-                </div>
-            </div>
-        </article>
-
+        <WeatherCard tempInfo={tempInfo}/>
     </>
   )
 }
