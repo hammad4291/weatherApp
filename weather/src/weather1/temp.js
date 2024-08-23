@@ -33,6 +33,10 @@ const Temp = () => {
         }
     }
 
+    const resetInput = () => {
+        setSearchValue("");
+    }
+
     // To call it on relod
 
     useEffect(() => {
@@ -49,6 +53,7 @@ const Temp = () => {
                 id='search'
                 className='searchTerm'
                 value={searchValue}
+                onClick={() => {resetInput()}}
                 onChange={(event) => {setSearchValue(event.target.value)}}
             />
             <button className='searchButton' type='button' onClick={() => {getWeatherInfo()}}>

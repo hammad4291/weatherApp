@@ -11,11 +11,14 @@ const WeatherCard = ({tempInfo}) => {
         country,
         sunset
     } = tempInfo
+    let sec = sunset
+    let date = new Date(sec *1000);
+    let timeStr = `${date.getHours()}:${date.getMinutes()}`;
     return (
     <>
       <article className="widget">
             <div className="weatherIcon">
-                <i className={"wi wi-day-sunny"}></i>
+                <i className={`wi wi-day-${weathermood}`}></i>
             </div>
             <div className="weatherInfo">
                 <div className="temperature">
@@ -23,7 +26,7 @@ const WeatherCard = ({tempInfo}) => {
                 </div>
                 <div className="description">
                     <div className="weatherCondition">
-                        Cloudy
+                       {weathermood}
                     </div>
                     <div className="place">Rawalpindi, Pakistan</div>
                 </div>
@@ -37,7 +40,7 @@ const WeatherCard = ({tempInfo}) => {
                         <i className={"wi wi-sunset"}></i>
                     </p>
                     <p className='extra-info-leftside'>
-                    {sunset} <br />
+                    {timeStr} <br />
                     Sunset
                     </p>
                     </div>
@@ -46,8 +49,8 @@ const WeatherCard = ({tempInfo}) => {
                         <i className={"wi wi-humidity"}></i>
                     </p>
                     <p className='extra-info-leftside'>
-                    Humidity <br />
-                    {humidity}
+                    {humidity} <br />
+                    Humidity
                     </p>
                     </div>
                 </div>
@@ -57,7 +60,7 @@ const WeatherCard = ({tempInfo}) => {
                         <i className={"wi wi-rain"}></i>
                     </p>
                     <p className='extra-info-leftside'>
-                    19:19 PM <br />
+                    {pressure} <br />
                     Pressure
                     </p>
                     </div>
@@ -66,7 +69,7 @@ const WeatherCard = ({tempInfo}) => {
                         <i className={"wi wi-strong-wind"}></i>
                     </p>
                     <p className='extra-info-leftside'>
-                    19:19 PM <br />
+                    {speed} <br />
                     Speed
                     </p>
                     </div>
